@@ -118,19 +118,16 @@ FLAG_MAPPING = {
 }
 
 
-def create_token(username: str) -> str:
-    expire = datetime.now(timezone.utc) + timedelta(hours=TOKEN_EXPIRE_HOURS)
-    return jwt.encode({"sub": username, "exp": expire}, SECRET_KEY, algorithm=ALGORITHM)
-
-
 def get_current_user(token: str = Cookie(default=None, alias="access_token")) -> str:
     if not token:
-        raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers={"Location": "/login"})
+        # เปลี่ยนเป็น 303 
+        raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, headers={"Location": "/login"})
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload["sub"]
     except JWTError:
-        raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers={"Location": "/login"})
+        # เปลี่ยนเป็น 303 
+        raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, headers={"Location": "/login"})
 
 
 CurrentUser = Annotated[str, Depends(get_current_user)]
