@@ -291,14 +291,20 @@ def create_image_bytes(
 async def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
-
+# 2. สำหรับกดปุ่มเข้าสู่ระบบ (เช็ครหัสผ่าน)
 @app.post("/login")
 async def login(
+    request: Request,
     username: str = Form(...),
     password: str = Form(...),
 ):
     if USERS.get(username) != password:
-        raise HTTPException(status_code=400, detail="ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
+        return templates.TemplateResponse(
+            "login.html", 
+            {"request": request, "error": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"},
+            status_code=400
+        )
+    
     response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
     response.set_cookie(
         key="access_token",
@@ -309,7 +315,7 @@ async def login(
     )
     return response
 
-
+# 3. สำหรับออกจากระบบ
 @app.get("/logout")
 async def logout():
     response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
