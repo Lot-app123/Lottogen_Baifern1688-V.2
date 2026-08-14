@@ -236,7 +236,7 @@ def create_image_bytes(
    #triple_num = f"{num1}{num1}{num1}"
     #main_pair = f"{num2}{num2}{num2}"
 
-    # 2. จัดการ เลขคู่ 4 ชุด (pairs_list)
+    # 2. จัดการ เลขเจาะ 4 ชุด (pairs_list)
     available_digits = [d for d in range(10) if d not in (num1, num2)]
     
     def get_or_random_pair(user_input, default_format):
@@ -350,18 +350,18 @@ async def lottery_generate(
     for i, p in enumerate(pairs, 1):
         if p and len(p) == 2:
             if not main1 and not main2:
-                raise HTTPException(status_code=400, detail=f"กรุณาระบุ ว่ิง และ รูด ก่อนกำหนดเลขคู่ชุดที่ {i}")
+                raise HTTPException(status_code=400, detail=f"กรุณาระบุ วิ่ง และ รูด ก่อนกำหนดเลขเจาะชุดที่ {i}")
             
             valid = False
             if main1 and main1 in p: valid = True
             if main2 and main2 in p: valid = True
             
             if not valid:
-                raise HTTPException(status_code=400, detail=f"เลขคู่ชุดที่ {i} ({p}) ต้องมีเลข ว่ิง หรือ รูด อย่างน้อย 1 ตัว")
+                raise HTTPException(status_code=400, detail=f"เลขเจาะชุดที่ {i} ({p}) ต้องมีเลข วิ่ง หรือ รูด อย่างน้อย 1 ตัว")
     
     if win_num and len(win_num) == 6:
         if not main1 or not main2:
-            raise HTTPException(status_code=400, detail="กรุณาระบุทั้ง ว่ิง และ รูด ให้ครบก่อนกำหนดเลขวิน")
+            raise HTTPException(status_code=400, detail="กรุณาระบุทั้ง วิ่ง และ รูด ให้ครบก่อนกำหนดเลขวิน")
         if main1 not in win_num or main2 not in win_num:
             raise HTTPException(status_code=400, detail=f"เลขวิน ({win_num}) ต้องมีทั้งเลข วิ่ง ({main1}) และ รูด ({main2}) รวมอยู่ด้วย")
     # --- สิ้นสุดส่วนตรวจสอบเงื่อนไขตัวเลข ---
