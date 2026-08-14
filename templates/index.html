@@ -169,6 +169,69 @@ header {
   gap: 8px;
 }
 
+/* ─── Toggle Inputs Button ────────────────────────────── */
+.toggle-inputs-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s, border-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggle-inputs-btn:hover {
+  background: var(--border);
+}
+
+.toggle-inputs-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.toggle-inputs-title svg {
+  width: 16px;
+  height: 16px;
+}
+
+.chevron-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  transition: transform 0.3s ease, color 0.2s;
+}
+
+.toggle-inputs-btn.active .chevron-icon {
+  transform: rotate(180deg);
+  color: var(--gold);
+}
+
+/* Wrapper สำหรับทำแอนิเมชันเปิด/ปิด */
+.custom-numbers-wrapper {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+
+.custom-numbers-wrapper.expanded {
+  max-height: 600px; /* กะเผื่อความสูงให้ครอบคลุม Input ทั้งหมด */
+  opacity: 1;
+}
+
+.custom-numbers-container {
+  margin-bottom: 15px; /* ย้าย margin มาอยู่ด้านใน */
+}
+
 /* ─── Layout (Desktop First) ─────────────────────────────────── */
 .app {
   display: grid;
@@ -458,42 +521,51 @@ header {
         <span class="selected-badge" id="selected-count">เลือก 0 / 0</span>
       </div>
 
-      <!-- โซนกำหนดเลขแบบละเอียด -->
-      <div class="custom-numbers-container">
-        
-        <!-- แถวที่ 1: รูด/เน้น และ รอง -->
-        <div class="input-row">
-          <div class="input-group">
-            <label>วิ่ง (1 ตัว)</label>
-            <input type="text" name="main1" maxlength="1" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-          </div>
-          <div class="input-separator">-</div>
-          <div class="input-group">
-            <label>รูด (1 ตัว)</label>
-            <input type="text" name="main2" maxlength="1" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-          </div>
+      <!-- ปุ่มเปิด/ปิด โซนกำหนดเลข -->
+      <div class="toggle-inputs-btn" id="toggle-inputs-btn">
+        <div class="toggle-inputs-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+          กำหนดเลขเอง (ตัวเลือก)
         </div>
+        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
 
-        <!-- แถวที่ 2: เลขคู่ 6 ชุด -->
-        <div class="input-group">
-          <label>เลขคู่ 6 ชุด (ชุดละ 2 ตัว)</label>
-          <div class="pairs-grid">
-            <input type="text" name="pair1" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <input type="text" name="pair2" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <input type="text" name="pair3" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <input type="text" name="pair4" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <input type="text" name="pair5" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <input type="text" name="pair6" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+      <!-- โซนกำหนดเลขแบบละเอียด (ซ่อนอยู่โดยค่าเริ่มต้น) -->
+      <div class="custom-numbers-wrapper" id="custom-numbers-wrapper">
+        <div class="custom-numbers-container">
+          <!-- แถวที่ 1: รูด/เน้น และ รอง -->
+          <div class="input-row">
+            <div class="input-group">
+              <label>วิ่ง (1 ตัว)</label>
+              <input type="text" name="main1" maxlength="1" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            <div class="input-separator">-</div>
+            <div class="input-group">
+              <label>รูด (1 ตัว)</label>
+              <input type="text" name="main2" maxlength="1" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
           </div>
-        </div>
 
-        <!-- แถวที่ 3: เลขวิน -->
-        <div class="input-row">
+          <!-- แถวที่ 2: เลขคู่ 6 ชุด -->
           <div class="input-group">
-            <label>เลขวิน (6 ตัว)</label>
-            <input type="text" name="win_num" maxlength="6" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            <label>เลขคู่ 6 ชุด (ชุดละ 2 ตัว)</label>
+            <div class="pairs-grid">
+              <input type="text" name="pair1" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              <input type="text" name="pair2" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              <input type="text" name="pair3" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              <input type="text" name="pair4" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              <input type="text" name="pair5" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              <input type="text" name="pair6" maxlength="2" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
           </div>
-        </div>
+
+          <!-- แถวที่ 3: เลขวิน -->
+          <div class="input-row">
+            <div class="input-group">
+              <label>เลขวิน (6 ตัว)</label>
+              <input type="text" name="win_num" maxlength="6" inputmode="numeric" placeholder="สุ่ม" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+          </div>
 
       </div>
       <!-- สิ้นสุดโซนกำหนดเลขแบบละเอียด -->
@@ -664,6 +736,7 @@ const SETS = [
     ]
   }
 ];
+
 let currentSet = 0;
 const selected = new Set();
 let previewOpen = false;
@@ -782,6 +855,17 @@ function toggleAll(checked) {
   });
   renderList();
 }
+
+// ─── ระบบเปิด/ปิด โซนกำหนดตัวเลข ───
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById('toggle-inputs-btn');
+  const wrapper = document.getElementById('custom-numbers-wrapper');
+
+  toggleBtn.addEventListener('click', () => {
+    toggleBtn.classList.toggle('active');
+    wrapper.classList.toggle('expanded');
+  });
+});
 
 // ─── ระบบตรวจสอบตัวเลขแบบ Real-time (Frontend Validation) ───
 document.addEventListener("DOMContentLoaded", () => {
