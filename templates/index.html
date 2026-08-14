@@ -546,7 +546,7 @@ header {
             </div>
           </div>
 
-          <!-- แถวที่ 2: เลขคู่ 6 ชุด -->
+          <!-- แถวที่ 2: เลขเจาะ 6 ชุด -->
           <div class="input-group">
             <label>เลขเจาะ 6 ชุด (ชุดละ 2 ตัว)</label>
             <div class="pairs-grid">
@@ -905,7 +905,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pairInputs.forEach(input => input.style.borderColor = '');
     winInput.style.borderColor = '';
 
-    // 1. ตรวจสอบเลขคู่ 4 ชุด
+    // 1. ตรวจสอบเลขเจาะ 4 ชุด
     let seenPairs = new Set();
     pairInputs.forEach((input, index) => {
       let val = input.value;
@@ -925,7 +925,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const hasMain1 = m1 && val.includes(m1);
           const hasMain2 = m2 && val.includes(m2);
           if (!hasMain1 && !hasMain2) {
-            errors.push(`เลขเจาะชุดที่ ${index + 1} (${val}) ต้องมีเลข ว่ิง หรือ รูด`);
+            errors.push(`เลขเจาะชุดที่ ${index + 1} (${val}) ต้องมีเลข วิ่ง หรือ รูด`);
             input.style.borderColor = 'var(--red)';
             hasValidationError = true;
           }
@@ -933,7 +933,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // กฎข้อ 3: แต่ละช่องห้ามซ้ำกัน
         if (seenPairs.has(val)) {
-          errors.push(`เลขคู่ (${val}) ซ้ำกัน กรุณาเปลี่ยนเลขใหม่`);
+          errors.push(`เลขเจาะ (${val}) ซ้ำกัน กรุณาเปลี่ยนเลขใหม่`);
           input.style.borderColor = 'var(--red)';
           hasValidationError = true;
         }
@@ -956,7 +956,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // กฎข้อ 2: เลขวินต้องมีตัวเลขของ main1 และ main2 ประกอบอยู่ด้วย
         if (!wVal.includes(m1) || !wVal.includes(m2)) {
-          errors.push(`เลขวินต้องมีทั้ง ว่ิง (${m1}) และ รูด (${m2}) รวมอยู่ด้วย`);
+          errors.push(`เลขวินต้องมีทั้ง วิ่ง (${m1}) และ รูด (${m2}) รวมอยู่ด้วย`);
           winInput.style.borderColor = 'var(--red)';
           hasValidationError = true;
         }
